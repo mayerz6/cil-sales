@@ -204,25 +204,32 @@ Public Class index
 
     Private Sub Scrap_4()
 
-        ' Dim wrRequest As WebRequest = HttpWebRequest.Create(URL_1)
-        Dim postReq As WebRequest = WebRequest.Create("https://www.candrugfrontend.com/analysis/Login.aspx")
-        postReq.Credentials = CredentialCache.DefaultCredentials
-        postReq.Method = "POST"
         Dim postStr As String = "username=larrym&password=ad364e"
         Dim byteData = Encoding.UTF8.GetBytes(postStr)
+        Dim strOutput As String = ""
+        ' Dim wrRequest As WebRequest = HttpWebRequest.Create(URL_1)
+        Dim postReq As WebRequest = WebRequest.Create("https://www.candrugfrontend.com/analysis/Login.aspx?")
+        '  postReq.Credentials = CredentialCache.DefaultCredentials
+        postReq.Method = "POST"
+        postReq.ContentType = "application/x-www-form-urlencoded"
+        postReq.ContentLength = byteData.Length
 
 
+        Dim streamReq As Stream = postReq.GetRequestStream()
+        streamReq.Write(byteData, 0, byteData.Length)
+        streamReq.Close()
 
+        Dim myResponse As HttpWebResponse = postReq.GetResponse()
+        Dim reader As StreamReader = New StreamReader(myResponse.GetResponseStream(), Encoding.Default)
 
+        ' livedata.InnerHtml = reader.ToString
 
-        Using streamReq As New StreamReader(postReq.GetRequestStream())
-            ' streamReq.Write(byteData, 0, byteData.Length)
-            '  Using reader As StreamReader = New StreamReader(streamReq)
-            Dim pageData As String = streamReq.ReadToEnd()
-            livedata.InnerHtml = pageData
+        ' Read the returned content via a STREAM then return this content to the page.
+        Using sr As New StreamReader(myResponse.GetResponseStream())
+            strOutput = sr.ReadToEnd()
+            livedata.InnerHtml = strOutput
 
         End Using
-
 
 
     End Sub
