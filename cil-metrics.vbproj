@@ -92,6 +92,7 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\styles.css" />
     <Content Include="index.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>

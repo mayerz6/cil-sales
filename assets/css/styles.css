@@ -1,0 +1,3 @@
+﻿* { box-sizing: border-box; padding: 0; margin: 0; }
+body { font-size: 14px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; }
+p#livedata { outline: 1px solid #ccc; width: 400px; padding: 0.1em 0.1em; word-wrap: break-word; }
