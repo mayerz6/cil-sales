@@ -23,13 +23,13 @@ Partial Public Class index
     Protected WithEvents usrForm1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''livedata control.
+    '''currentDate control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents livedata As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents currentDate As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
     '''content control.
@@ -39,4 +39,31 @@ Partial Public Class index
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents content As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''livedata control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents livedata As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''orderMetrics control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents orderMetrics As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''todayDate2 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents todayDate2 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 End Class

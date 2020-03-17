@@ -1,238 +1,119 @@
-﻿Imports System.Net
-Imports System.Threading.Tasks
-Imports System.Web.HttpRequest
-Imports System
+﻿Imports System
 Imports System.IO
 Imports System.Text
+
+Imports System.Net.Http
+Imports System.Net.Http.Headers
+Imports OpenQA.Selenium
+Imports OpenQA.Selenium.IE
+Imports OpenQA.Selenium.Edge
+Imports OpenQA.Selenium.Chrome
+
+Imports System.Web
+Imports System.Threading.Tasks
+Imports System.Web.HttpRequest
+Imports System.Windows.Forms
+
 
 Public Class index
     Inherits System.Web.UI.Page
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        ' fetchContent()
-        ' postContent()
-        Scrap_4()
+        fetchSiteData()
     End Sub
 
+    Private Sub fetchSiteData()
 
-    Private Sub fetchContent()
+        ' Instantiate an instance of the Chrome browser
 
-        Dim URL_1 As String = "https://www.candrugfrontend.com/analysis/Login.aspx?"
-        URL_1 += "__EVENTTARGET="
-        URL_1 += "&__EVENTARGUMENT="
-        URL_1 += "&__VIEWSTATE=%2FwEPDwUJLTM5MTgyNTA4D2QWBAIBDw8WAh4EVGV4dAUcVXNlciBuY"
-        URL_1 += "W1lIG9yIHBhc3N3b3JkIGVycm9yLmRkAgMPZBYCAgEPDxYCHwAFBmxhc"
-        URL_1 += "nJ5bWRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBQ"
-        URL_1 += "xJbWFnZWJ1dHRvbjEEoMwgGTo4TXAF%2.0Fmi4nPIWw%2Fq1zdqgWkFokzukPW%2.0FX0Q%3D%3D"
-        URL_1 += "&__VIEWSTATEGENERATOR=7013DD5C"
-        URL_1 += "&__EVENTVALIDATION=%2FwEdAASBQuORhJmbPJ3yot7Apj8FKhoCyVdJtLIis5AgYZ%2FRYe4sciJO3Hoc68"
-        URL_1 += "xTFtZGQEigHWxeGMVV9FZeLIVAhNhI91qHKvs0yubJEhGvttQFUl4%2Fex1nQiPDrCsweLI%2FliU%3D"
-        URL_1 += "&username=larrym"
-        URL_1 += "&password=ad364e"
-        URL_1 += "&Imagebutton1.x=47&Imagebutton1.y=10"
+        Dim chromeOptions As ChromeOptions = New ChromeOptions()
+        chromeOptions.AddArguments("--headless")
 
-        ' Any scraped information store as a variable
-        Dim strOutput As String = ""
+        Dim driver As IWebDriver = New ChromeDriver(chromeOptions)
+        '  Navigate to the webpage we want to scrap
+        driver.Navigate().GoToUrl("https://www.candrugfrontend.com/analysis/Login.aspx")
 
-        ' Instantiate an instance of the WebRequest CLASS to retrieve the contents of the site.
+        '  System.Threading.Thread.Sleep(4000)
 
-        ' OPTION 1 - Request to fetch the initial login page from the site.
-        Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(URL_1), HttpWebRequest)
+        ' Store the elements we wish to interact with as public variables
+        Dim usrInput As IWebElement = driver.FindElement(By.Name("username"))
+        Dim usrPwd As IWebElement = driver.FindElement(By.Name("password"))
+        Dim btnSubmit As IWebElement = driver.FindElement(By.Name("Imagebutton1"))
 
-        ' OPTION 2 - Request to fetch the initial login page from the site.
-        ' Dim wrRequest As WebRequest = HttpWebRequest.Create(URL_1)
+        ' usrInput.Click()
+        ' usrPwd.Click()
+        ' usrInput.Clear()
+        ' usrPwd.Clear()
 
-        ' Instantiate an instance of the WebResponse CLASS to record the returned data from the scraped site.
-        Dim wrResponse As WebResponse
-        wrResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-
-        ' Read the returned content via a STREAM then return this content to the page.
-        Using sr As New StreamReader(wrResponse.GetResponseStream())
-            strOutput = sr.ReadToEnd()
-            livedata.InnerText = strOutput
-
-        End Using
-
-    End Sub
-
-    Private Sub postContent()
-
-        Dim URL_0 As String = "https://www.candrugfrontend.com/analysis/Login.aspx"
-        Dim rWLCookies As HttpWebRequest = DirectCast(WebRequest.Create(URL_0), HttpWebRequest)
-        Dim loginCookie As CookieCollection = New CookieCollection()
-        rWLCookies.CookieContainer = New CookieContainer()
-        rWLCookies.Method = "POST"
-
-        ' Store the site scraped as a variable
-        Dim strURL As String = "https://www.candrugfrontend.com/analysis/DataQuery.aspx"
-        Dim postData As String = ""
+        usrInput.SendKeys("<username>")
+        usrPwd.SendKeys("<password>")
 
 
-        postData += "&__VIEWSTATE=/wEPDwUJLTM5MTgyNTA4ZBgBBR5"
-        postData += "fX0NvbnRyb2xzUmVxdWlyZVBvc3R"
-        postData += "CYWNrS2V5X18WAQUMSW1hZ2VidXR0"
-        postData += "b24xKyITxiLQM2Qu58C14u0NUADyP"
-        postData += "NeM5NjwWfWWJ3Q6a5c="
-        postData += "&__VIEWSTATEGENERATOR=7013DD5C"
-        postData += "&__EVENTVALIDATION=/wEdAASK+oP"
-        postData += "BobEmqhMCWLYzXLmnKhoCyVdJtLIis5"
-        postData += "AgYZ/RYe4sciJO3Hoc68xTFtZGQEigH"
-        postData += "WxeGMVV9FZeLIVAhNhIvG5zkZePmXhq"
-        postData += "G7NYdumCWQguqZRH+AnoZBhEN50A/Xc="
-        postData += "username=larrym"
-        postData += "&password=ad364e"
+        btnSubmit.Click()
+
+        ' Begin engagement with the site after SUCCESSFUL login
+        Dim startDate As IWebElement = driver.FindElement(By.Name("tbStartDate"))
+        Dim endDate As IWebElement = driver.FindElement(By.Name("tbEndDate"))
+        Dim btnGenerate As IWebElement = driver.FindElement(By.Name("btnGenerate"))
+
+        Dim todayDate As String = Date.Now.ToString("MM/dd/yyyy")
+
+        startDate.Clear()
+        endDate.Clear()
+
+        startDate.SendKeys("03/01/2020")
+        endDate.SendKeys(todayDate)
+
+        btnGenerate.Click()
+
+        ' Dim resultGrid As IWebElement = driver.FindElement(By.Id("PanelGeneral"))
+        '  Dim resultGrid As IList(Of IWebElement) = driver.FindElement(By.Id("PanelGeneral"))
+
+        ' Define the locations of TOTAL Revenue and TOTAL Processed Orders within the TABLE
+
+        Dim orderTotal As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[13]/td[2]"))
+        Dim revenueTotal As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[13]/td[3]"))
+        Dim ordersBMD As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[3]/td[2]"))
+        Dim ordersBSD As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[4]/td[2]"))
+        Dim ordersCDG As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[5]/td[2]"))
+        Dim ordersCDO As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[6]/td[2]"))
+        Dim ordersCPK As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[7]/td[2]"))
+        Dim ordersCPO As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[8]/td[2]"))
+        Dim ordersCPW As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[9]/td[2]"))
+        Dim ordersGDD As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[10]/td[2]"))
+        Dim ordersMED As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[11]/td[2]"))
+        Dim ordersMOC As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[12]/td[2]"))
+
+        '  Dim rowTD As IWebElement
 
 
-        Dim tempCookie As New CookieCollection
-        Dim encoding As New UTF8Encoding
-        Dim data As Byte() = encoding.GetBytes(postData)
-        ' Any scraped information store as a variable
+        ' livedata.InnerHtml = orderTotal.Text
+        '  livedata.InnerHtml = "Total Orders Processed: " + orderTotal.Text + "<br> Total Revenue Earnings: " + revenueTotal.Text
+        '  livedata.InnerHtml = "<br>"
+        livedata.InnerHtml += "<br><b>CPO</b> Orders Processed: " + ordersCPO.Text
+        livedata.InnerHtml += "<br><b>CPW</b> Orders Processed: " + ordersCPW.Text
+        livedata.InnerHtml += "<br><b>CPK</b> Orders Processed: " + ordersCPK.Text
+        livedata.InnerHtml += "<br><b>CDO</b> Orders Processed: " + ordersCDO.Text
+        livedata.InnerHtml += "<br><b>BMD</b> Orders Processed: " + ordersBMD.Text
+        livedata.InnerHtml += "<br><b>BSD</b> Orders Processed: " + ordersBSD.Text
+        livedata.InnerHtml += "<br><b>Candrug</b> Orders Processed: " + ordersCDG.Text
+        livedata.InnerHtml += "<br><b>GDD</b> Orders Processed: " + ordersGDD.Text
+        livedata.InnerHtml += "<br><b>Medisave</b> Orders Processed: " + ordersMED.Text
+        livedata.InnerHtml += "<br><b>MOC</b> Orders Processed: " + ordersMOC.Text
+        livedata.InnerHtml += "<hr>"
+        livedata.InnerHtml += "<br><h4>Total Orders Processed: " + orderTotal.Text + "</h4>"
+        '  For Each row As IWebElement In resultGrid
 
-        ' Request to fetch the initial login page from the site.
-        Dim wrRequest As HttpWebRequest = DirectCast(WebRequest.Create(strURL), HttpWebRequest)
-
-        wrRequest.Method = "POST"
-        wrRequest.KeepAlive = True
-        wrRequest.Credentials = New NetworkCredential("larrym", "ad364e")
-        wrRequest.AllowWriteStreamBuffering = True
-        wrRequest.ContentType = "application/x-www-form-urlencoded"
-        wrRequest.Referer = "https://www.candrugfrontend.com/analysis/DataQuery.aspx"
-        wrRequest.AllowAutoRedirect = True
-        wrRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-        wrRequest.Headers.Add("Accept-Language: en-us,en;q=0.5")
-        wrRequest.Headers.Add("Accept-Encoding: gzip,deflate")
-        wrRequest.Headers.Add("Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7")
-        wrRequest.KeepAlive = True
-        wrRequest.UserAgent = "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.2309.372 Safari/537.36"
-
-        wrRequest.ContentLength = data.Length
-
-        '  wrRequest.CookieContainer = tempCookie
-        ' Dim postReq As New StreamWriter(wrRequest.GetRequestStream())
-
-        Using postReq As New StreamWriter(wrRequest.GetRequestStream())
-            ' postReq.Write(data, 0, data.Length)
-            postReq.Write(postData)
-            '    postReq.Close()
-        End Using
-
-
-
-        Dim postRes As HttpWebResponse = wrRequest.GetResponse()
-        wrRequest = WebRequest.Create(strURL)
-
-        wrRequest.CookieContainer = New CookieContainer()
-        wrRequest.CookieContainer.Add(postRes.Cookies)
-
-        Dim httpRes2 As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-
-        postRes = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-        tempCookie.Add(postRes.Cookies)
-        loginCookie = tempCookie
-
-
-        Dim postReqReader As New StreamReader(httpRes2.GetResponseStream())
-
-        Dim thepage As String = postReqReader.ReadToEnd
-
-        livedata.InnerHtml = thepage
-        content.InnerText = data.Length
-
-    End Sub
-
-    Private Sub Scrape()
-
-        Try
-
-            Dim URL_0 As String = "https://www.candrugfrontend.com/analysis/Login.aspx?PAGE=DataQuery.aspx"
-            Dim URL As String = "https://www.candrugfrontend.com/analysis/DataQuery.aspx"
-
-            Dim postData As String = ""
-            postData += "?__EVENTTARGET="
-            postData += "&__EVENTARGUMENT="
-            '     postData += "&__VIEWSTATE=%2FwEPDwUJLTM5MTgyNTA4D2QWBAIBDw8WAh4EVGV4dAUcVXNlciBuY"
-            '    postData += "W1lIG9yIHBhc3N3b3JkIGVycm9yLmRkAgMPZBYCAgEPDxYCHwAFBmxhc"
-            '   postData += "nJ5bWRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBQ"
-            '  postData += "xJbWFnZWJ1dHRvbjEEoMwgGTo4TXAF%2.0Fmi4nPIWw%2Fq1zdqgWkFokzukPW%2.0FX0Q%3D%3D"
-            postData += "&__VIEWSTATEGENERATOR=7013DD5C"
-            '   postData += "&__EVENTVALIDATION=%2FwEdAASBQuORhJmbPJ3yot7Apj8FKhoCyVdJtLIis5AgYZ%2FRYe4sciJO3Hoc68"
-            '  postData += "xTFtZGQEigHWxeGMVV9FZeLIVAhNhI91qHKvs0yubJEhGvttQFUl4%2Fex1nQiPDrCsweLI%2FliU%3D"
-
-            postData += "&username=larrym"
-            postData += "&password=ad364e"
-            '            postData += "&Imagebutton1.x=47&Imagebutton1.y=10"
-
-            '   "https://www.candrugfrontend.com/analysis/Login.aspx?__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwUJLTM5MTgyNTA4D2QWBAIBDw8WAh4EVGV4dAUcVXNlciBuYW1lIG9yIHBhc3N3b3JkIGVycm9yLmRkAgMPZBYCAgEPDxYCHwAFBmxhcnJ5bWRkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBQxJbWFnZWJ1dHRvbjEEoMwgGTo4TXAF%2Fmi4nPIWw%2Fq1zdqgWkFokzukPW%2FX0Q%3D%3D&__VIEWSTATEGENERATOR=7013DD5C&__EVENTVALIDATION=%2FwEdAASBQuORhJmbPJ3yot7Apj8FKhoCyVdJtLIis5AgYZ%2FRYe4sciJO3Hoc68xTFtZGQEigHWxeGMVV9FZeLIVAhNhI91qHKvs0yubJEhGvttQFUl4%2Fex1nQiPDrCsweLI%2FliU%3D&username=larrym&password=ad364e&Imagebutton1.x=47&Imagebutton1.y=10"
-
-            content.InnerText = URL_0 + postData
-
-            Dim tempCookies As New CookieContainer
-            Dim encoding As New UTF8Encoding
-            Dim byteData As Byte() = encoding.GetBytes(postData)
-
-            Dim postReq As HttpWebRequest = DirectCast(WebRequest.Create(URL_0), HttpWebRequest)
-            postReq.Method = "GET"
-            postReq.KeepAlive = True
-            postReq.CookieContainer = tempCookies
-            postReq.ContentType = "application/x-www-form-urlencoded"
-            postReq.Referer = URL
-            postReq.UserAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; ru; rv:1.9.2.3) Gecko/20100401 Firefox/4.0 (.NET CLR 3.5.30729)"
-            postReq.ContentLength = byteData.Length
-
-            Dim postreqstream As Stream = postReq.GetRequestStream()
-            postreqstream.Write(byteData, 0, byteData.Length)
-            postreqstream.Close()
-            Dim postresponse As HttpWebResponse
-
-            postresponse = DirectCast(postReq.GetResponse(), HttpWebResponse)
-            tempCookies.Add(postresponse.Cookies)
-            Dim logincookie As CookieContainer
-            logincookie = tempCookies
-            Dim postreqreader As New StreamReader(postresponse.GetResponseStream())
-
-            Dim thepage As String = postreqreader.ReadToEnd
-
-            livedata.InnerHtml = thepage
-
-
-        Catch ex As Exception
-            Console.WriteLine(ex.Message, "Error scrapping site content!")
-        End Try
+        ' startDate.Clear()
+        ' endDate.Clear()
+        orderMetrics.InnerHtml = Convert.ToInt32(orderTotal.Text)
+        'If (row.TagName.Equals("td")) Then
+        '   tdElements = row.Text
+        'End If
+        driver.Close()
+        driver.Quit()
 
 
     End Sub
-
-    Private Sub Scrap_4()
-
-        Dim postStr As String = "username=larrym&password=ad364e"
-        Dim byteData = Encoding.UTF8.GetBytes(postStr)
-        Dim strOutput As String = ""
-        ' Dim wrRequest As WebRequest = HttpWebRequest.Create(URL_1)
-        Dim postReq As WebRequest = WebRequest.Create("https://www.candrugfrontend.com/analysis/Login.aspx?")
-        '  postReq.Credentials = CredentialCache.DefaultCredentials
-        postReq.Method = "POST"
-        postReq.ContentType = "application/x-www-form-urlencoded"
-        postReq.ContentLength = byteData.Length
-
-
-        Dim streamReq As Stream = postReq.GetRequestStream()
-        streamReq.Write(byteData, 0, byteData.Length)
-        streamReq.Close()
-
-        Dim myResponse As HttpWebResponse = postReq.GetResponse()
-        Dim reader As StreamReader = New StreamReader(myResponse.GetResponseStream(), Encoding.Default)
-
-        ' livedata.InnerHtml = reader.ToString
-
-        ' Read the returned content via a STREAM then return this content to the page.
-        Using sr As New StreamReader(myResponse.GetResponseStream())
-            strOutput = sr.ReadToEnd()
-            livedata.InnerHtml = strOutput
-
-        End Using
-
-
-    End Sub
-
 
 End Class

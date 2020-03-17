@@ -15,10 +15,37 @@
         <span></span>
     </form>
    -->
-    <!--  -->
-        <p runat="server" id="livedata"></p>
-        <br />
 
-      <b>URL:</b>  <span id="content" runat="server"></span>
+  <div class="container">
+        <br />
+        <br />
+    <h2 id="currentDate" runat="server">CIL Order Metrics - <%: DateTime.Now.ToString("dddd MMMM d, yyyy") %></h2>
+
+    <div id="banner">Up to date statistics for the <b>month of <%: DateTime.Now.ToString("MMMM") %></b></div>
+       <br />
+        <span id="content" runat="server"></span>
+        <br />
+            <canvas style="width:692px; height:486px;" id="myChart"></canvas>
+                 <p runat="server" id="livedata"></p>
+
+
+     
+    <span runat="server" style="visibility:hidden;" id="orderMetrics"></span>
+    <span runat="server" id="todayDate2"></span>
+          
+  
+    <br />
+
+
+ 
+
+        </div>
+        
+      
+            <script src="./assets/js/Chart.bundle.min.js"></script>
+      <!--      <script src="./assets/js/Chart.min.js"></script>
+            <script src="./assets/js/bootstrap.js"></script>      -->
+            <script src="./assets/js/main.js"></script>
+       
 </body>
 </html>
