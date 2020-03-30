@@ -8,8 +8,7 @@
         <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 <body>
-    <h2>CIL Online Metrics</h2>
-
+   
     <!-- 
    <form id="usrForm1" runat="server">
         <span></span>
@@ -32,6 +31,7 @@
      
     <span runat="server" style="visibility:hidden;" id="orderMetrics"></span>
     <span runat="server" id="todayDate2"></span>
+      <b><span runat="server" id="dbFeedback"></span></b>
           
   
     <br />

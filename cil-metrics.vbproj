@@ -116,6 +116,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\styles.css" />
+    <Content Include="assets\js\bootstrap.js" />
+    <Content Include="assets\js\Chart.bundle.min.js" />
+    <Content Include="assets\js\Chart.min.js" />
+    <Content Include="assets\js\main.js" />
     <Content Include="index.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
