@@ -6,7 +6,12 @@
 <head runat="server">
     <title>CIL Sales Metrics</title>
         <link rel="shortcut icon" href="./assets/img/favicon.png" />
-        <link rel="stylesheet" href="./assets/css/styles.css" />
+      <meta http-equiv="refresh" content="900" />
+    <link rel="stylesheet" href="./assets/css/bootstrap.css" />
+  
+  <link rel="stylesheet" href="./assets/css/Chart.min.css" /> 
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+
 </head>
 <body>
    

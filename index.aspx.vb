@@ -16,7 +16,7 @@ Imports System.Windows.Forms
 
 Imports System.Data.SqlClient
 Imports System.Data
-
+Imports cil_metrics.connection
 
 Public Class index
     Inherits System.Web.UI.Page
@@ -67,8 +67,8 @@ Public Class index
         Dim endDate As IWebElement = driver.FindElement(By.Name("tbEndDate"))
         Dim btnGenerate As IWebElement = driver.FindElement(By.Name("btnGenerate"))
 
-        ' Dim todayDate As String = Date.Now.ToString("MM/dd/yyyy")
-        Dim todayDate As String = "02/01/2020"
+        Dim todayDate As String = Date.Now.ToString("MM/dd/yyyy")
+        '   Dim todayDate As String = "02/21/2020"
         startDate.Clear()
         endDate.Clear()
 
@@ -301,11 +301,9 @@ Public Class index
         Dim orderTotal As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[13]/td[2]"))
         Dim revenueTotal As IWebElement = driver.FindElement(By.XPath("//*[@id='dgDataQuery']/tbody/tr[13]/td[3]"))
 
-        driver.Close()
-        driver.Quit()
 
-        Dim valStr As String = revenueTotal.Text
-        valStr = valStr.Remove(0, 1)
+
+
         Dim iOrder_TOTAL As Integer = If(orderTotal.Text = " ", 0, Convert.ToInt32(orderTotal.Text))
 
         livedata.InnerHtml += "<br><b>CPO</b> Orders Processed: " + iOrders_CPO.ToString()
@@ -325,13 +323,16 @@ Public Class index
         Dim iOrderTotals As Integer = If(orderTotal.Text = " ", 0, Convert.ToInt32(orderTotal.Text))
         Dim revDoubler As Double = If(revenueTotal.Text <> " ", revenueTotal.Text, 0)
 
+        'Dim valStr As String = revenueTotal.Text
+        'valStr = valStr.Remove(0, 1)
         livedata.InnerHtml += "<br><h4>Total Orders Processed: " + iOrderTotals.ToString() + "</h4>"
         livedata.InnerHtml += "<br><h4>Total Revenue Earnings: $" + revDoubler.ToString() + "</h4>"
 
         '    '  Dim valStr As String = revenueTotal.Text
         '    ' Remove the "$" sign from the string representing TOTAL order revenue.
         '    ' valStr = valStr.Remove(0, 1)
-
+        driver.Close()
+        driver.Quit()
 
         ' ########################################################################################################## 
         ' Here we will inject the DAILY ORDER value within an HTML tag so the Chart.JS library can plot the graph based on this value
@@ -353,6 +354,7 @@ Public Class index
         Dim tdStr As DateTime = DateTime.ParseExact(todayDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture)
         todayDate = tdStr.ToString("yyyy-MM-dd")
 
+        Dim txCon As New connection
 
         Dim count As Integer = 1
         Dim total_orders As Integer = 0
@@ -369,7 +371,9 @@ Public Class index
 
         ' Test for the existence of a record with a DATE which matches today's date.
         sqlCmd.CommandText = "SELECT COUNT(*) AS 'RESULTS' FROM [cil-sales-metrics].[dbo].[doMetrics] WHERE [date] = '" & todayDate & "'"
-        sqlCmd.Connection = sqlConn
+        ' sqlCmd.Connection = sqlConn
+        sqlCmd.Connection = txCon.dbConnect()
+
         sdrData = sqlCmd.ExecuteReader()
 
         While sdrData.Read()

@@ -1,4 +1,23 @@
 ﻿* { box-sizing: border-box; padding: 0; margin: 0; }
 body { font-size: 14px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; }
 p#livedata { outline: 1px solid #ccc; width: 400px; padding: 0.1em 0.1em; word-wrap: break-word; }
+p#livetotals { outline: 2px solid #ccc; width: 400px; padding: 0.1em 0.1em; word-wrap: break-word; margin-left: 4em; }
+b#metHead { font-size: 24pt; font-weight: 800; line-height: 2.1em; }
+b#metHead_2 { font-size: 24pt; font-weight: 800; line-height: 2.1em; }
 span#orderMetrics { visibility: hidden; }
+span#orderMetricTotals { visibility: hidden; }
+
+
+
+div.content-3 {
+    height: 100px;
+    background: linear-gradient( rgba(0, 0, 0, 1), rgba(0, 0, 0, 1) ), url(styles.css) no-repeat 0% 100% fixed;
+    background-size: cover;
+    text-align: left;
+    padding: 20px;
+    margin: 2em 0em;
+}
+
+footer#copyright {
+    margin-bottom: 2em;
+}
