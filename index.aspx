@@ -4,7 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>CIL Site Scraper</title>
+    <title>CIL Sales Metrics</title>
+        <link rel="shortcut icon" href="./assets/img/favicon.png" />
         <link rel="stylesheet" href="./assets/css/styles.css" />
 </head>
 <body>
