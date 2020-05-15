@@ -50,6 +50,15 @@ Partial Public Class index
     Protected WithEvents livedata As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
+    '''livetotals control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents livetotals As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''orderMetrics control.
     '''</summary>
     '''<remarks>
@@ -59,20 +68,11 @@ Partial Public Class index
     Protected WithEvents orderMetrics As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
-    '''todayDate2 control.
+    '''orderMetricTotals control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents todayDate2 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
-    '''dbFeedback control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents dbFeedback As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents orderMetricTotals As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 End Class
