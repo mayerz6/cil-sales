@@ -68,7 +68,7 @@ Public Class index
         Dim btnGenerate As IWebElement = driver.FindElement(By.Name("btnGenerate"))
 
         Dim todayDate As String = Date.Now.ToString("MM/dd/yyyy")
-        '   Dim todayDate As String = "02/21/2020"
+        '  Dim todayDate As String = "03/31/2020"
         startDate.Clear()
         endDate.Clear()
 
@@ -354,6 +354,7 @@ Public Class index
         Dim tdStr As DateTime = DateTime.ParseExact(todayDate, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture)
         todayDate = tdStr.ToString("yyyy-MM-dd")
 
+        ' Instantiate an instance of the DB connection CLASS for our ability to communicate with our SQL server.
         Dim txCon As New connection
 
         Dim count As Integer = 1
@@ -362,18 +363,13 @@ Public Class index
 
 
         ' Instantiation of DB connection string
-        sqlConn.ConnectionString =
-            "server=MAYERZ-S940;" _
-            & "database=cil-sales-metrics;" _
-            & "uid = mayerz; pwd=M@y3rZT#ch;"
 
-        sqlConn.Open()
+
+        ' sqlCmd.Connection = sqlConn
+        sqlCmd.Connection = txCon.getInstance()
 
         ' Test for the existence of a record with a DATE which matches today's date.
         sqlCmd.CommandText = "SELECT COUNT(*) AS 'RESULTS' FROM [cil-sales-metrics].[dbo].[doMetrics] WHERE [date] = '" & todayDate & "'"
-        ' sqlCmd.Connection = sqlConn
-        sqlCmd.Connection = txCon.dbConnect()
-
         sdrData = sqlCmd.ExecuteReader()
 
         While sdrData.Read()
@@ -382,8 +378,6 @@ Public Class index
         sdrData.Close()
         ' If we have previously entered order metrics for today's date then UPDATE those values based on the query below. 
         If (count <> 0) Then
-
-
 
             For i As Integer = 0 To 9 Step +1
 
@@ -395,15 +389,15 @@ Public Class index
                 & "WHERE [date] =  '" & todayDate & "' AND [account] = '" & i & "'"
 
                 ' Make connection to DB and execute SQL commands
-                sqlCmd.Connection = sqlConn
+                '   sqlCmd.Connection = txCon.dbConnect()
                 sqlCmd.ExecuteNonQuery()
 
             Next i
 
             sqlCmd.CommandText = "EXECUTE addMonthlyTotals @currentDate='" & todayDate & "', @monthFD='" & mFD & "', @currentMonth='" & cM & "'"
-            sqlCmd.Connection = sqlConn
+            '  sqlCmd.Connection = txCon.dbConnect()
             sqlCmd.ExecuteNonQuery()
-            sqlConn.Close()
+            ' sqlConn.Close()
 
             ' If we haven't previously entered order metrics for today's date then INSERT new values based on the query below.
         Else
@@ -417,24 +411,24 @@ Public Class index
                 & "values('" & metrics(i).invoices & "', '" & metrics(i).new_web & "', '" & metrics(i).return_web & "', '" & metrics(i).sales & "', '" & i & "', '" & todayDate & "')"
 
                 ' Make connection to DB and execute SQL commands
-                sqlCmd.Connection = sqlConn
+                '  sqlCmd.Connection = txCon.dbConnect()
                 sqlCmd.ExecuteNonQuery()
 
             Next i
 
             sqlCmd.CommandText = "EXECUTE addMonthlyTotals @currentDate='" & todayDate & "', @monthFD='" & mFD & "', @currentMonth='" & cM & "'"
-            sqlCmd.Connection = sqlConn
+            '  sqlCmd.Connection = txCon.dbConnect()
             sqlCmd.ExecuteNonQuery()
-            sqlConn.Close()
+            '  sqlConn.Close()
 
         End If
 
 
-        sqlConn.Open()
+        '   sqlConn.Open()
 
         ' Retrieve the latest TOTAL orders processed for the current month.
         sqlCmd.CommandText = "EXECUTE getMonthlyTotals @currentMonth='" & cM & "'"
-        sqlCmd.Connection = sqlConn
+        '  sqlCmd.Connection = txCon.dbConnect()
         sdrData = sqlCmd.ExecuteReader()
 
         ' The TOTAL monthly order is returned based on the results of the stored procedure.
@@ -443,15 +437,15 @@ Public Class index
             total_orders = If(IsDBNull(sdrData("tdi")), 0, Convert.ToInt32(sdrData("tdi")))
         End While
         sdrData.Close()
-        sqlConn.Close()
+        ' sqlConn.Close()
 
         cM = 2020
-        sqlConn.Open()
+        ' sqlConn.Open()
 
 
         ' Retrieve the latest TOTAL orders processed for the current month.
         sqlCmd.CommandText = "EXECUTE getAnnualTotals @currentMonth='" & cM & "'"
-        sqlCmd.Connection = sqlConn
+        ' sqlCmd.Connection = txCon.dbConnect()
         sdrData = sqlCmd.ExecuteReader()
 
         ' The TOTAL monthly order is returned based on the results of the stored procedure.
