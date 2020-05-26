@@ -69,12 +69,16 @@ Public Class index
         '    ' Remove the "$" sign from the string representing TOTAL order revenue.
         '    ' valStr = valStr.Remove(0, 1)
 
-
+        site.insertMetrics()
+        site.getMetrics()
         ' ########################################################################################################## 
         ' Here we will inject the DAILY ORDER value within an HTML tag so the Chart.JS library can plot the graph based on this value
         orderMetrics.InnerHtml = site.GetTotalOrders()
-        orderMetricTotals.InnerText = site.returnAnnualOrders()
+        orderMetricTotals.InnerHtml = site.returnAnnualOrders()
         ' ########################################################################################################## 
+
+        site.CloseDriver()
+
 
         ' Inject this value as part of the web page returned to the user.
 
@@ -85,9 +89,6 @@ Public Class index
 
         ' ################################# Store retrieved values within DATABASE ################################# 
         ' ########################################################################################################## 
-        site.CloseDriver()
-        site.insertMetrics()
-        site.getMetrics()
 
 
     End Sub

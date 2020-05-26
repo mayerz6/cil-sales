@@ -147,8 +147,8 @@ Public Class metrics
         endDate = driver.FindElement(By.Name("tbEndDate"))
         btnGenerate = driver.FindElement(By.Name("btnGenerate"))
 
-        '  Me.t_Date = Date.Now.ToString("MM/dd/yyyy")
-        Me.t_Date = "01/07/2020"
+        Me.t_Date = Date.Now.ToString("MM/dd/yyyy")
+        '  Me.t_Date = "01/07/2020"
 
         startDate.Clear()
         endDate.Clear()
@@ -494,9 +494,6 @@ Public Class metrics
 
         ' Instantiate an instance of the DB connection CLASS for our ability to communicate with our SQL server.
         Dim txCon As New connection
-
-        Dim count As Integer = 1
-
 
         ' sqlCmd.Connection = sqlConn
         sqlCmd.Connection = txCon.getInstance()
