@@ -5,22 +5,29 @@ Imports OpenQA.Selenium.Chrome
 Public Class connection
 
     ' Definition of the DB CLASS Properties
-    Dim sqlConn As New SqlConnection
+    Private sqlConn As New SqlConnection
     Dim sqlCmd As New SqlCommand
 
-    Function getInstance() As SqlConnection
+    Public Function getInstance() As SqlConnection
 
         If (sqlConn.State <> ConnectionState.Open) Then
             dbConnect()
-            sqlConn.Close()
-            sqlConn.Open()
+            Console.WriteLine("Connected!!!")
+            Me.sqlConn.Close()
+            Me.sqlConn.Open()
         End If
 
-        Return sqlConn
+        Return Me.sqlConn
+
+    End Function
+
+    Public Function closeInstance()
+        Me.sqlConn.Close()
+        Return Nothing
     End Function
 
 
-    Function dbConnect()
+    Public Function dbConnect()
 
         ' Configure the settings necessary to interact with the DB
         sqlConn.ConnectionString = "server=MAYERZ-S940;" _

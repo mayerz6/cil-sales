@@ -83,9 +83,6 @@
 </div>
         <!-- GROUPED CONTENT -->
 
-         
-
-
     <span runat="server" id="orderMetrics"></span>
     <span runat="server" id="orderMetricTotals"></span>
           
